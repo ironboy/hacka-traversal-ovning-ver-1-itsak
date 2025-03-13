@@ -19,6 +19,9 @@ server.listen(3008, () => console.log('Listening on http://localhost:3008'));
 server.get('/api/images', (request, response) => {
   let path = request.query.path || '';
 
+  // Fix to make traversal attacks impossible
+  path = path.replaceAll('..', '');
+
   if (path && path.slice(-1) !== '/') { path += '/'; }
 
   let fileList = fs.readdirSync('./client/images/' + path)
